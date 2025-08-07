@@ -3,14 +3,14 @@
 
 class Motor {
 private:
-    int pin_dir1_;    // Pin para dirección
-    int pin_dir2_; // Pin para habilitar/deshabilitar el motor
+    int pin_pwm_;    // Pin para dirección
+    int pin_dir_; // Pin para habilitar/deshabilitar el motor
     float pwm_speed_; // Velocidad actual del motor (0-100%)
-    int channel1_;
-    int channel2_;
+    int channel_;
+
 public:
     // Constructor
-    Motor(int pin_dir1, int pin_dir2, int channel1, int channel2);
+    Motor(int pin_pwm, int pin_dir, int channel);
 
     void stop();
     void init();

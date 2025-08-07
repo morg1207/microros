@@ -1,10 +1,10 @@
 #include "motor_controller.h"
 
 // Constructor
-MotorController::MotorController(int dir_pin1, int dir_pin2, int channel1, int channel2,
+MotorController::MotorController(int pwm, int dir, int channel,
                                  int encoder_pin_a, int encoder_pin_b, 
                                  float kp, float ki, float kd)
-    : motor(dir_pin1, dir_pin2,channel1,channel2), 
+    : motor(pwm, dir,channel), 
       encoder(encoder_pin_a, encoder_pin_b), 
       pid(kp, ki, kd){
     

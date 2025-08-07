@@ -32,22 +32,16 @@
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)) {} }
 
 // Motors setup
-#define MOTOR_FR MOTOR1
-#define MOTOR_FL MOTOR4
-#define MOTOR_RR MOTOR2
-#define MOTOR_RL MOTOR3
+#define MOTOR_R MOTOR1
+#define MOTOR_L MOTOR2
 
-constexpr const char* FRONT_LEFT_MOTOR_NAME = "front_left_joint";
-constexpr const char* FRONT_RIGHT_MOTOR_NAME = "front_right_joint";
-constexpr const char* REAR_LEFT_MOTOR_NAME = "near_left_joint";
-constexpr const char* REAR_RIGHT_MOTOR_NAME = "near_right_joint";
+constexpr const char* LEFT_MOTOR_NAME = "left_joint";
+constexpr const char* RIGHT_MOTOR_NAME = "right_joint";
 
 enum Motors
 {
-  motor_right_rear,
-  motor_left_rear,
-  motor_right_front,
-  motor_left_front,
+  motor_right,
+  motor_left,
   MOTORS_COUNT
 };
 
@@ -86,10 +80,8 @@ class RosCommunication{
 
         void error_loop();
 
-        MotorController* motorControllerFL;
-        MotorController* motorControllerFR;
-        MotorController* motorControllerNL;
-        MotorController* motorControllerNR;
+        MotorController* motorControllerL;
+        MotorController* motorControllerR;
 
         void updatWheelsStates();
         void fill_wheels_state_msg(sensor_msgs__msg__JointState* msg);
