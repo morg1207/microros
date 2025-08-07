@@ -21,8 +21,8 @@ uvrobot_interfaces__msg__Motors set_pwm_motors_msg;
 
 
 std_msgs__msg__Bool set_switch_control_msg;
-agro_interfaces__msg__ControlStatus motor_status_control_msg;
-agro_interfaces__msg__ConfigParams config_params_msg;
+uvrobot_interfaces__msg__ControlStatus motor_status_control_msg;
+uvrobot_interfaces__msg__ConfigParams config_params_msg;
 
 rclc_executor_t executor;
 rclc_support_t support;
@@ -105,12 +105,12 @@ void RosCommunication::initialize(){
 
 
     // motor front left
-    motorControllerFL = new MotorController(motorL.pwm, motorL.dir,
+    motorControllerL = new MotorController(motorL.pwm, motorL.dir,
                                             motorL.channel, 
                                             motorL.encoder_A,   motorL.encoder_B,    
                                             200.0, 70.0, 1.0); 
     // motor front rigth
-    motorControllerFR = new MotorController(motorR.pwm, motorR.dir,
+    motorControllerR = new MotorController(motorR.pwm, motorR.dir,
                                             motorR.channel,
                                             motorR.encoder_A, motorR.encoder_B,    
                                            200.0, 70.0, 1.0); 
@@ -126,8 +126,8 @@ void RosCommunication::initialize(){
     motorControllerL->init();
     motorControllerR->init();
 
-    instanceFL = motorControllerL;
-    instanceFR = motorControllerR;
+    instanceL = motorControllerL;
+    instanceR = motorControllerR;
 
 }
 
@@ -155,14 +155,14 @@ void RosCommunication::publishers_define() {
     RCCHECK(rclc_publisher_init_default(
         &current_pulses_counts_pub,
         &node,
-        ROSIDL_GET_MSG_TYPE_SUPPORT(agro_interfaces, msg, Motors),
+        ROSIDL_GET_MSG_TYPE_SUPPORT(uvrobot_interfaces, msg, Motors),
         "current_pulses_counts"));
 
     // Publicador para la información de control
     RCCHECK(rclc_publisher_init_default(
         &control_state_pub,
         &node,
-        ROSIDL_GET_MSG_TYPE_SUPPORT(agro_interfaces, msg, ControlStatus),
+        ROSIDL_GET_MSG_TYPE_SUPPORT(uvrobot_interfaces, msg, ControlStatus),
         "control_info"));
     // Publicador para la información de control
     RCCHECK(rclc_publisher_init_default(
@@ -190,7 +190,7 @@ void RosCommunication::subscribers_define() {
     RCCHECK(rclc_subscription_init_default(
         &set_pwm_motors_sub,
         &node,
-        ROSIDL_GET_MSG_TYPE_SUPPORT(agro_interfaces, msg, Motors),
+        ROSIDL_GET_MSG_TYPE_SUPPORT(uvrobot_interfaces, msg, Motors),
         "/set_pwm_motors"));
 
     RCCHECK(rclc_subscription_init_default(
@@ -202,7 +202,7 @@ void RosCommunication::subscribers_define() {
     RCCHECK(rclc_subscription_init_default(
         &config_params_sub,
         &node,
-        ROSIDL_GET_MSG_TYPE_SUPPORT(agro_interfaces, msg, ConfigParams),
+        ROSIDL_GET_MSG_TYPE_SUPPORT(uvrobot_interfaces, msg, ConfigParams),
         "/config_params"));
 }
 void RosCommunication::timers_define() {
@@ -256,7 +256,7 @@ void RosCommunication::set_vel_motors_callback(const void *msg_recv) {
 }
 
 void RosCommunication::set_pwm_motors_callback(const void *msg_recv) {
-    const agro_interfaces__msg__Motors *data = (const agro_interfaces__msg__Motors *)msg_recv;
+    const uvrobot_interfaces__msg__Motors *data = (const uvrobot_interfaces__msg__Motors *)msg_recv;
 
     instance_ros_comunication->motorControllerL->motor.setPwm(data->motor_l);
     instance_ros_comunication->motorControllerR->motor.setPwm(data->motor_r);
@@ -271,7 +271,7 @@ void RosCommunication::set_pwm_motors_callback(const void *msg_recv) {
 }
 
 void RosCommunication::config_params_callback(const void *msg_recv) {
-    const agro_interfaces__msg__ConfigParams *data = (const agro_interfaces__msg__ConfigParams *)msg_recv;
+    const uvrobot_interfaces__msg__ConfigParams *data = (const uvrobot_interfaces__msg__ConfigParams *)msg_recv;
 
     float kp = data->kp;
     float ki = data->ki;

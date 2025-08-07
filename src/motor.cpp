@@ -10,14 +10,14 @@ Motor::Motor(int pin_pwm, int pin_dir, int channel)
 
 void Motor::init(){
 
-    const int ledChannel = channel;    // Canal PWM, puede ser de 0 a 15
+    const int ledChannel = channel_;    // Canal PWM, puede ser de 0 a 15
     const int frequency = 5000;  // Frecuencia en Hz
     const int resolution = 12;    // Resolución en bits (de 1 a 15)
 
     ledcSetup(ledChannel, frequency, resolution);
-    ledcAttachPin(pin_pwm, ledChannel);
+    ledcAttachPin(pin_pwm_, ledChannel);
 
-    pinMode(pin_dir, OUTPUT);
+    pinMode(pin_dir_, OUTPUT);
     //Serial.println("Motor Started");
 
 }
@@ -36,7 +36,7 @@ void Motor::setPwm(float speed) {
     // Determinar dirección
     if (pwm_speed_ > 0) {
         ledcWrite(channel_, abs(pwm_speed_)); 
-        digitalWrite(pin_dir_,HIGHT);
+        digitalWrite(pin_dir_,HIGH);
     }
     else if(pwm_speed_ == 0){
         ledcWrite(channel_, 0); 
@@ -49,5 +49,5 @@ void Motor::setPwm(float speed) {
 
 // Habilita el motor
 void Motor::stop() {        
-    ledcWrite(channel, 0); 
+    ledcWrite(channel_, 0); 
 }
